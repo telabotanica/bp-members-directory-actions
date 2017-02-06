@@ -40,7 +40,6 @@ do_action( 'bp_before_members_loop' ); ?>
 	</div>
 
 	<?php
-
 	/**
 	 * Fires before the display of the members list.
 	 *

@@ -8,14 +8,14 @@ jQuery(document).ready(function() {
 		itemCheckboxes = jq('.bp_mda_member_item_checkbox'),
 		allSearchResultsCheckbox = jq('.bp_mda_all_search_results_checkbox'),
 		allPageItemsCheckbox = jq('.bp_mda_all_page_items_checkbox'),
-		actionButton = jq('.bp_mda_group_actions_submit');
+		actionButton = jq('.bp_mda_bulk_actions_submit');
 
 	itemCheckboxes.click(function() {
 		updateActionButtonState();
 	});
 
 	allSearchResultsCheckbox.click(function() {
-		reflectAllSearchResultsState();
+		reflectAllSearchResultsState(true);
 	});
 
 	allPageItemsCheckbox.click(function() {
@@ -28,9 +28,11 @@ jQuery(document).ready(function() {
 		actionButton.attr('disabled', newActionButtonState);
 	}
 
-	function reflectAllSearchResultsState() {
+	function reflectAllSearchResultsState(reflectUncheckedState) {
 		var currentState = allSearchResultsCheckbox.prop('checked');
-		itemCheckboxes.prop('checked', currentState);
+		if (currentState || reflectUncheckedState) {
+			itemCheckboxes.prop('checked', currentState);
+		}
 		itemCheckboxes.prop('disabled', currentState);
 		updateActionButtonState();
 	}
@@ -42,5 +44,5 @@ jQuery(document).ready(function() {
 	}
 
 	// first run
-	updateActionButtonState();
+	reflectAllSearchResultsState(false); // includes updateActionButtonState()
 });

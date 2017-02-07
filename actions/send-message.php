@@ -9,17 +9,9 @@
  * Plugin Name:       BP Members Directory Actions
  */
 
-//var_dump($_REQUEST);
 // display form or perform action
 if (! empty($_REQUEST['subject']) && ! empty($_REQUEST['content']) && ! empty($_REQUEST['serialized_recipients_ids'])) {
 	// Send message
-	/*echo "<br><br>On réalise l'action d'envoi de messages !!!!<br>";
-	var_dump($_REQUEST['subject']);
-	echo "<br/><br/>";
-	var_dump($_REQUEST['content']);
-	echo "<br/><br/>";
-	var_dump($_REQUEST['serialized_recipients_ids']);
-	echo "<br/><br/>";*/
 	$args = array(
 		'recipients' => unserialize($_REQUEST['serialized_recipients_ids']),
 		'subject' => $_REQUEST['subject'],
@@ -27,19 +19,13 @@ if (! empty($_REQUEST['subject']) && ! empty($_REQUEST['content']) && ! empty($_
 	);
 	$messageId = messages_new_message($args);
 	if ($messageId === false) {
-		// error
-		?>
-		<p class="error notice">
-			<?php _e('An error occured while sending your message', 'bp-members-directory-actions') ?>
-		</p>
-		<?php
+		// error - compatible with themes having a notices hook
+		add_action('theme_notices', 'bp_mda_send_message_notice_error');
+		bp_mda_send_message_notice_error();
 	} else {
-		// ok
-		?>
-		<p class="error notice">
-			<?php _e('Your message was sent successfully', 'bp-members-directory-actions') ?>
-		</p>
-		<?php
+		// ok - compatible with themes having a notices hook
+		add_action('theme_notices', 'bp_mda_send_message_notice_message_sent');
+		bp_mda_send_message_notice_message_sent();
 	}
 
 } else { // display send message form ?>
@@ -88,4 +74,16 @@ if (! empty($_REQUEST['subject']) && ! empty($_REQUEST['content']) && ! empty($_
 
 		<?php wp_nonce_field('bp_mda_send_message'); ?>
 	</form>
+<?php }
+
+function bp_mda_send_message_notice_message_sent($no_theme_classes=false) { ?>
+	<div class="notice notice-confirm">
+		<?php _e('Your message was sent successfully', 'bp-members-directory-actions') ?>
+	</div>
+<?php }
+
+function bp_mda_send_message_notice_error() { ?>
+	<div class="notice notice-warning">
+		<?php _e('An error occured while sending your message', 'bp-members-directory-actions') ?>
+	</div>
 <?php }

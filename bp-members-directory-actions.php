@@ -22,7 +22,9 @@ function bp_mda_init() {
 
 	// If a bulk action was triggered, display action-specific form
 	if (! empty($_REQUEST['bp_mda_bulk_action'])) {
-		add_action('bp_mda_action_specific_form', 'bp_mda_add_action_specific_form', 10);
+		add_action('bp_after_directory_members', 'bp_mda_action_specific_form', 10);
+		// Populate it with REQUESTed action data and make it hookable
+		add_action('bp_mda_action_specific_form', 'bp_mda_add_default_action_specific_form', 10, 3);
 	}
 
 	// Add "select all page items" checkbox before members list
@@ -45,35 +47,62 @@ function bp_mda_init() {
 }
 
 /**
- * Displays a form depending on the chosen bulk action
+ * Sub-action hook triggered in bp_mda_init()
+ * 
+ * Triggers new actions on "bp_mda_action_specific_form" hook, and feeds them
+ * with REQUESTed action data
  */
-function bp_mda_add_action_specific_form() {
+function bp_mda_action_specific_form() {
 	// Chosen action
 	$action = $_REQUEST['bp_mda_bulk_action'];
 	// User IDs of checked items (array) - might be disabled !
-	$recipients = array();
+	$recipientsIds = array();
 	if (isset($_REQUEST['bp_mda_recipients'])) {
-		$recipients = $_REQUEST['bp_mda_recipients'];
+		$recipientsIds = $_REQUEST['bp_mda_recipients'];
+		// integer-ify IDs
+		$recipientsIds = array_map(function($a) {
+			return intval(trim($a));
+		}, $recipientsIds);
 	}
 	// Was the "Select all search results" checkbox present and checked ?
-	$allSearchResults = false;
-	if (isset($_REQUEST['bp_mda_select_all_search_results'])) {
-		$allSearchResults = ($_REQUEST['bp_mda_select_all_search_results'] == "on");
+	if (isset($_REQUEST['bp_mda_select_all_search_results']) && ($_REQUEST['bp_mda_select_all_search_results'] == "on")) {
+		echo "All search results, ma pewl !<br>";
+		// use BP Profile Search search function
+		$resultats = bps_search();
+		var_dump($resultats);
+		// filter results
 	}
+	/**
+	 * Fires to display action-specific forms
+	 *
+	 * @since 1.1.0
+	 */
+	do_action('bp_mda_action_specific_form', $action, $recipientsIds);
+}
 
-	switch ($action) {
-		case "send-message":
-		?>
-		<h3>Envoi de messages !!</h3>
-		<?php break;
-		case "buy-cookie":
-		?>
-		<h3>Je veux un cookie !!</h3>
-		<?php break;
-		default:
+/**
+ * Displays a form depending on the chosen bulk action; tries to find a file
+ * named "actions/action-slug.php" and includes it (for ex, for "send-message"
+ * action : "actions/send-message.php"
+ * 
+ * (default action-specific form action for "bp_mda_action_specific_form" hook)
+ */
+function bp_mda_add_default_action_specific_form($action, $recipientsIds) {
+
+	/*var_dump($action);
+	echo "<br/>";
+	var_dump($recipientsIds);
+	echo "<br/>";*/
+
+	if (! empty($action)) {
+		$filePath = __DIR__ . '/actions/' . sanitize_file_name($action) . '.php';
+		if (file_exists($filePath)) { ?>
+			<div class="bp_mda_action_specific_form">
+				<?php include $filePath; ?>
+			</div>
+		<?php
+		}
 	}
-	// Propagate search results if any
-	bp_mda_bp_profile_search_proxy();
 }
 
 /**
@@ -140,6 +169,18 @@ function bp_mda_bp_profile_search_proxy() {
 		if (substr($k, 0, 6) == 'field_') { ?>
 			<input type="hidden" name="<?php echo $k ?>" value="<?php echo $v ?>">
 		<?php }
+	}
+}
+
+/**
+ * In case of multiple-steps form (ex: send-message), call this to stay in the
+ * BP Members Directory Action execution stream
+ */
+function bp_mda_propagate_action() {
+	if (! empty($_REQUEST['bp_mda_bulk_action'])) {
+	?>
+		<input type="hidden" name="bp_mda_bulk_action" value="<?php echo $_REQUEST['bp_mda_bulk_action'] ?>">
+	<?php
 	}
 }
 

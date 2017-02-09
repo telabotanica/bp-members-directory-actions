@@ -21,7 +21,11 @@ do_action( 'bp_before_members_loop' ); ?>
 		
 <h1>Hé salut, c'est la boucle du plugin, dis-moi !!</h1>
 
-<?php if ( bp_has_members( bp_ajax_querystring( 'members' ) ) ) : ?>
+<?php
+	// IMPORTANT at the moment (2017-02) this plugin guarantees compatibility
+	// with BP Profile Search only if the member loop is initiated with default
+	// parameters (type="active")
+	if ( bp_has_members( bp_ajax_querystring( 'members' ) ) ) : ?>
 
 	<div id="pag-top" class="pagination">
 

@@ -4,6 +4,14 @@ A BuddyPress plugin that adds capacity to perform bulk actions on members from t
 ## usage
 Install, activate.
 
+## important
+At the moment (2017-02) this plugin guarantees compatibility with BP Profile
+Search only if the member loop is initiated with default parameters (`type="active"`).
+
+Feel free to change members loop initiation mode when overloading the members directory
+template in your theme, but the "Select all search results" checkbox will not work
+as expected with `type` values other than `active` - see related issue #1
+
 ## new actions
 
 ### bp_directory_before_members_item

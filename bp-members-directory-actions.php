@@ -59,19 +59,32 @@ function bp_mda_action_specific_form() {
 	$recipientsIds = array();
 	if (isset($_REQUEST['bp_mda_recipients'])) {
 		$recipientsIds = $_REQUEST['bp_mda_recipients'];
-		// integer-ify IDs
-		$recipientsIds = array_map(function($a) {
-			return intval(trim($a));
-		}, $recipientsIds);
 	}
 	// Was the "Select all search results" checkbox present and checked ?
 	if (isset($_REQUEST['bp_mda_select_all_search_results']) && ($_REQUEST['bp_mda_select_all_search_results'] == "on")) {
-		echo "All search results, ma pewl !<br>";
 		// use BP Profile Search search function
 		$resultats = bps_search();
-		var_dump($resultats);
+		// exclude disabled / incomplete / inactive accounts from the list
+		// @WARNING incompatible with members loop initialization other than
+		// default "activity" type
+		global $wpdb;
+		global $bp;
+		$invalidIds = $wpdb->get_col(
+			"SELECT ID FROM " . $wpdb->prefix . "users "
+			. "WHERE user_status != 0 "
+			. "OR ID NOT IN ("
+				. "SELECT user_id FROM " . $bp->members->table_name_last_activity . " WHERE type='last_activity'"
+			. ")"
+		);
 		// filter results
+		$recipientsIds = array_diff($resultats['users'], $invalidIds);
 	}
+
+	// integer-ify IDs
+	$recipientsIds = array_map(function($a) {
+		return intval(trim($a));
+	}, $recipientsIds);
+
 	/**
 	 * Fires to display action-specific forms
 	 *
@@ -89,16 +102,15 @@ function bp_mda_action_specific_form() {
  */
 function bp_mda_add_default_action_specific_form($action, $recipientsIds) {
 
-	/*var_dump($action);
-	echo "<br/>";
-	var_dump($recipientsIds);
-	echo "<br/>";*/
-
 	if (! empty($action)) {
 		$filePath = __DIR__ . '/actions/' . sanitize_file_name($action) . '.php';
 		if (file_exists($filePath)) { ?>
 			<div class="bp_mda_action_specific_form">
-				<?php include $filePath; ?>
+				<?php
+					// include()d file directly reads $action and $recipientsIds
+					// @TODO do something cleaner some day
+					include $filePath;
+				?>
 			</div>
 		<?php
 		}

@@ -69,6 +69,7 @@ function bp_mda_action_specific_form() {
 		// default "activity" type
 		global $wpdb;
 		global $bp;
+
 		$invalidIds = $wpdb->get_col(
 			"SELECT ID FROM " . $wpdb->prefix . "users "
 			. "WHERE user_status != 0 "
@@ -118,7 +119,7 @@ function bp_mda_add_default_action_specific_form($action, $recipientsIds) {
 }
 
 /**
- * Displays a checkbox allowing to check all checkboxes on the current page
+ * Displays a checkbox allowing to (un)check all checkboxes on the current page
  */
 function bp_mda_select_all_page_items_checkbox() {
 	?>
@@ -159,7 +160,7 @@ function bp_mda_add_filterable_actions_menu() {
 				// Propagate search results if any
 				bp_mda_bp_profile_search_proxy();
 			?>
-			<input class="bp_mda_bulk_actions_submit" type="submit" value="Go !">
+			<input class="bp_mda_bulk_actions_submit" type="submit" value="<?php _e('Apply') ?>">
 		</form>
 	</div>
 	<?php

@@ -10,6 +10,7 @@ jQuery(document).ready(function() {
 		allPageItemsCheckbox = jq('.bp_mda_all_page_items_checkbox'),
 		actionButton = jq('.bp_mda_bulk_actions_submit');
 
+	// click listeners
 	itemCheckboxes.click(function() {
 		updateActionButtonState();
 	});
@@ -22,12 +23,19 @@ jQuery(document).ready(function() {
 		chekAllPageCheckboxes();
 	});
 
+	/**
+	 * Action button is enabled only if at least one checkbox is checked
+	 */
 	function updateActionButtonState() {
 		var checkedItemCheckboxes = jq('.bp_mda_member_item_checkbox:checked');
 		var newActionButtonState = ((checkedItemCheckboxes.length > 0) || allSearchResultsCheckbox.prop("checked")) ? false : 'disabled';
 		actionButton.attr('disabled', newActionButtonState);
 	}
 
+	/**
+	 * When "all search results" is checked, all members checkboxes are checked
+	 * too, and disabled to prevent thinking you can unckeck some (won't work)
+	 */
 	function reflectAllSearchResultsState(reflectUncheckedState) {
 		var currentState = allSearchResultsCheckbox.prop('checked');
 		if (currentState || reflectUncheckedState) {
@@ -37,6 +45,9 @@ jQuery(document).ready(function() {
 		updateActionButtonState();
 	}
 
+	/**
+	 * Propagates "check all page" checkbox state to all members checkboxes
+	 */
 	function chekAllPageCheckboxes() {
 		var currentState = allPageItemsCheckbox.prop('checked');
 		itemCheckboxes.prop('checked', currentState);

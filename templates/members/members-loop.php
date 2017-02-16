@@ -18,8 +18,6 @@ do_action( 'bp_before_members_loop' ); ?>
 <?php if ( bp_get_current_member_type() ) : ?>
 	<p class="current-member-type"><?php bp_current_member_type_message() ?></p>
 <?php endif; ?>
-		
-<h1>Hé salut, c'est la boucle du plugin, dis-moi !!</h1>
 
 <?php
 	// IMPORTANT at the moment (2017-02) this plugin guarantees compatibility

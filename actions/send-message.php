@@ -2,6 +2,8 @@
 /**
  * "send-message" action
  * (inspired by bp-themes/bp-default/members/single/messages/compose.php)
+ * Some code might be useless
+ * @TODO review it properly
  * 
  * available variables :
  *  - $recipientsIds : array of IDs of all the users the action is targeted at

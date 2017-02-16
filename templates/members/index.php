@@ -14,8 +14,6 @@
 do_action( 'bp_before_directory_members_page' ); ?>
 
 <div id="buddypress">
-	<h1>Hé salut, c'est le template du plugin, dis-donc !!</h1>
-
 	<?php
 
 	/**

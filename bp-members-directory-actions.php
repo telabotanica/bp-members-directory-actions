@@ -28,10 +28,10 @@ function bp_mda_init() {
 	}
 
 	// Add "select all page items" checkbox before members list
-	add_action('bp_before_directory_members_list', 'bp_mda_select_all_page_items_checkbox', 10);
+	add_action('bp_before_directory_members_list', 'bp_mda_select_all_page_items_checkbox', 20);
 	if (class_exists('bps_widget')) { // BP Profile Search compatibility
 		// Add "select all search results" checkbox before members list
-		add_action('bp_before_directory_members_list', 'bp_mda_add_select_all_search_results_checkbox', 10);
+		add_action('bp_before_directory_members_list', 'bp_mda_add_select_all_search_results_checkbox', 15);
 	}
 
 	// Add filterable actions menu before members list
@@ -124,7 +124,9 @@ function bp_mda_add_default_action_specific_form($action, $recipientsIds) {
 function bp_mda_select_all_page_items_checkbox() {
 	?>
 	<div class="bp_mda_select_all_page_items">
-		<input type="checkbox" class="bp_mda_all_page_items_checkbox">
+		<label>
+			<input type="checkbox" class="bp_mda_all_page_items_checkbox">
+		</label>
 	</div>
 	<?php
 }

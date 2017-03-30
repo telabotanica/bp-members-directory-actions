@@ -38,8 +38,8 @@ msgid "Bulk actions"
 msgstr "Actions groupées"
 
 # wpml-name: cc5fd9b9f1cad59fcff97a1f21f34304
-msgid "Send a message"
-msgstr "Envoyer un message"
+msgid "Write a message"
+msgstr "Rédiger un message"
 
 # wpml-name: cb5ae17636e975f9bf71ddf5bc542075
 msgid "0.1"

@@ -38,7 +38,7 @@ Hooking new functions here allows to perform any action; to add actions to the b
 ## new WP filters
 
 ### bp_mda_bulk_actions `(array $values)`
-Used to feed the action selector in the bulk actions form. Elements of `$values` array must be `'action-slug' => 'Translated action display name'`. For example : `'send-message' => __('Send a message', 'bp-members-directory-actions')`.
+Used to feed the action selector in the bulk actions form. Elements of `$values` array must be `'action-slug' => 'Translated action display name'`. For example : `'send-message' => __('Write a message', 'bp-members-directory-actions')`.
 
 Default filter `bp_mda_add_default_bulk_actions` adds actions included in the plugin (currently `send-message`).
 

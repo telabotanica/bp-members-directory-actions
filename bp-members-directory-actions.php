@@ -226,7 +226,7 @@ function bp_mda_add_select_all_search_results_checkbox() {
  */
 function bp_mda_add_default_bulk_actions($values) {
 	$values = array(
-		'send-message' => __('Send a message', 'bp-members-directory-actions')
+		'send-message' => __('Write a message', 'bp-members-directory-actions')
 	);
 	return $values;
 }

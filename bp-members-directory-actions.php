@@ -182,7 +182,7 @@ function bp_mda_bp_profile_search_proxy() {
 	<?php }
 	foreach ($_REQUEST as $k => $v) {
 		if (substr($k, 0, 6) == 'field_') { ?>
-			<input type="hidden" name="<?php echo $k ?>" value="<?php echo $v ?>">
+			<input class="bp-mda-propagate-search" type="hidden" name="<?php echo $k ?>" value="<?php echo $v ?>">
 		<?php }
 	}
 }
@@ -204,7 +204,7 @@ function bp_mda_propagate_action() {
  * selected
  */
 function bp_mda_add_select_all_search_results_checkbox() {
-	if (! empty($_REQUEST['bp_profile_search'])) {
+	if (! empty($_REQUEST['bp_profile_search']) && bp_mda_has_at_least_one_filter($_REQUEST)) {
 		global $members_template;
 		$checked = (isset($_REQUEST['bp_mda_select_all_search_results']) && ($_REQUEST['bp_mda_select_all_search_results'] == "on"));
 		?>
@@ -219,6 +219,21 @@ function bp_mda_add_select_all_search_results_checkbox() {
 		</div>
 	<?php
 	}
+}
+
+/**
+ * Returns true if, in the given array, at least one item with a key starting
+ * with "field_" has a non-empty value (i.e. if the BP Profile Search form was
+ * submitted with at least one filter)
+ */
+function bp_mda_has_at_least_one_filter(array $filters) {
+	$ok = false;
+	foreach ($filters as $k => $v) {
+		if (substr($k, 0, 6) == 'field_') {
+			$ok = ($ok || ! empty($v));
+		}
+	}
+	return $ok;
 }
 
 /**

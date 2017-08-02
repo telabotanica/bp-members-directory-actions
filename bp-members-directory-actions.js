@@ -23,6 +23,9 @@ jQuery(document).ready(function() {
 		chekAllPageCheckboxes();
 	});
 
+	// if any action form is displayed, scroll to it
+	scrollToActionFormHead();
+
 	/**
 	 * Action button is enabled only if at least one checkbox is checked
 	 */
@@ -52,6 +55,19 @@ jQuery(document).ready(function() {
 		var currentState = allPageItemsCheckbox.prop('checked');
 		itemCheckboxes.prop('checked', currentState);
 		updateActionButtonState();
+	}
+
+	/**
+	 * If any element having the "bp_mda_action_specific_form" class is
+	 * displayed, scroll to it
+	 */
+	function scrollToActionFormHead() {
+		var formHead = jq('.bp_mda_action_specific_form');
+		if (formHead.length) {
+			jq('html, body').animate({
+				scrollTop: formHead.offset().top - 70 // some space for any bar
+			}, 100);
+		}
 	}
 
 	// first run

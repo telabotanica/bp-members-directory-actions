@@ -32,11 +32,13 @@ if (! empty($_REQUEST['subject']) && ! empty($_REQUEST['content']) && ! empty($_
 
 } else { // display send message form ?>
 
-	<form action="" method="post" id="send_message_form" class="standard-form" role="main" enctype="multipart/form-data">
+	<h2 id="bp_mda_action_form_head" class="bp_mda_action_form_title"><?php _e("Send Message", 'buddypress'); ?></h2>
+
+	<form action="" method="post" id="send_message_form" class="standard-form bp_mda_action_form" role="main" enctype="multipart/form-data">
 
 		<?php do_action( 'bp_before_messages_compose_content' ); ?>
 
-		<label for="send-to-input"><?php _e("Send To (Username or Friend's Name)", 'buddypress'); ?></label>
+		<label for="send-to-input"><?php _e("Send To (Username or Friend's Name)", 'buddypress'); ?> : </label>
 		<ul class="first acfb-holder">
 			<li>
 				<?php
@@ -71,7 +73,7 @@ if (! empty($_REQUEST['subject']) && ! empty($_REQUEST['content']) && ! empty($_
 		<?php do_action( 'bp_after_messages_compose_content' ); ?>
 
 		<div class="submit">
-			<input type="submit" value="<?php esc_attr_e( "Send Message", 'buddypress' ); ?>" name="send" id="send" />
+			<input class="bp_mda_action_submit" type="submit" value="<?php esc_attr_e( "Send Message", 'buddypress' ); ?>" name="send" id="send" />
 		</div>
 
 		<?php wp_nonce_field('bp_mda_send_message'); ?>

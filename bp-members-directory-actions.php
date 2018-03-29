@@ -27,6 +27,9 @@ function bp_mda_init() {
 		add_action('bp_mda_action_specific_form', 'bp_mda_add_default_action_specific_form', 10, 3);
 	}
 
+	// Add title for possible actions on members list
+	add_action('bp_before_directory_members_list', 'bp_mda_title_on_actions_section', 5);
+
 	// Add "select all page items" checkbox before members list
 	add_action('bp_before_directory_members_list', 'bp_mda_select_all_page_items_checkbox', 10);
 	if (class_exists('bps_widget')) { // BP Profile Search compatibility
@@ -116,6 +119,17 @@ function bp_mda_add_default_action_specific_form($action, $recipientsIds) {
 		<?php
 		}
 	}
+}
+
+/**
+ * Displays a title for the possible actions on members list section
+ */
+function bp_mda_title_on_actions_section() {
+	?>
+	<div class="bp_mda_title_on_actions_section">
+		<h3 class="section-header">Actions possibles sur la liste</h3>
+	</div>
+	<?php
 }
 
 /**

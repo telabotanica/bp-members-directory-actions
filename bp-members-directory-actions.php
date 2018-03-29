@@ -28,14 +28,14 @@ function bp_mda_init() {
 	}
 
 	// Add "select all page items" checkbox before members list
-	add_action('bp_before_directory_members_list', 'bp_mda_select_all_page_items_checkbox', 20);
+	add_action('bp_before_directory_members_list', 'bp_mda_select_all_page_items_checkbox', 10);
 	if (class_exists('bps_widget')) { // BP Profile Search compatibility
 		// Add "select all search results" checkbox before members list
 		add_action('bp_before_directory_members_list', 'bp_mda_add_select_all_search_results_checkbox', 15);
 	}
 
 	// Add filterable actions menu before members list
-	add_action('bp_before_directory_members_list', 'bp_mda_add_filterable_actions_menu', 10);
+	add_action('bp_before_directory_members_list', 'bp_mda_add_filterable_actions_menu', 20);
 	// Populate actions menu with default values
 	add_filter('bp_mda_bulk_actions', 'bp_mda_add_default_bulk_actions');
 

@@ -62,11 +62,23 @@ function bp_mda_action_specific_form() {
 	$recipientsIds = array();
 	if (isset($_REQUEST['bp_mda_recipients'])) {
 		$recipientsIds = $_REQUEST['bp_mda_recipients'];
+	} else {
+		$recipientsIds = array_map(
+			function($value) {
+				if (retrieve_deleted_tb_user_id() === (int) $value) {
+					return $value = NULL;
+				}
+				return (int) $value;
+			},
+			// bp_ajax_querystring( 'members' ) returns members ids from search results
+			// in a string starting with 'include=' and separated with comas
+			explode(',',substr(bp_ajax_querystring( 'members' ),strpos(bp_ajax_querystring( 'members' ),'=')+1))
+		);
 	}
 	// Was the "Select all search results" checkbox present and checked ?
 	if (isset($_REQUEST['bp_mda_select_all_search_results']) && ($_REQUEST['bp_mda_select_all_search_results'] == "on")) {
 		// use BP Profile Search search function
-		$resultats = bps_search();
+		$resultats = bps_search($_REQUEST,$recipientsIds);
 		// exclude disabled / incomplete / inactive accounts from the list
 		// @WARNING incompatible with members loop initialization other than
 		// default "activity" type

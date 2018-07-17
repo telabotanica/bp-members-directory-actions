@@ -1,6 +1,6 @@
 /**
  * Manage checkboxes combinations behaviour
- * 
+ *
  * Plugin Name:       BP Members Directory Actions
  */
 jQuery(document).ready(function() {
@@ -41,6 +41,10 @@ jQuery(document).ready(function() {
 	 */
 	function reflectAllSearchResultsState(reflectUncheckedState) {
 		var currentState = allSearchResultsCheckbox.prop('checked');
+		if (currentState) {
+			 allPageItemsCheckbox.prop('checked',false);
+			 updateActionButtonState();
+		}
 		if (currentState || reflectUncheckedState) {
 			itemCheckboxes.prop('checked', currentState);
 		}
@@ -53,6 +57,10 @@ jQuery(document).ready(function() {
 	 */
 	function chekAllPageCheckboxes() {
 		var currentState = allPageItemsCheckbox.prop('checked');
+		if (currentState) {
+			allSearchResultsCheckbox.prop('checked',false);
+			reflectAllSearchResultsState(true);
+		}
 		itemCheckboxes.prop('checked', currentState);
 		updateActionButtonState();
 	}

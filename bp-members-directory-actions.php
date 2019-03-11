@@ -32,10 +32,9 @@ function bp_mda_init() {
 
 	// Add "select all page items" checkbox before members list
 	add_action('bp_before_directory_members_list', 'bp_mda_select_all_page_items_checkbox', 10);
-	if (class_exists('bps_widget')) { // BP Profile Search compatibility
-		// Add "select all search results" checkbox before members list
-		add_action('bp_before_directory_members_list', 'bp_mda_add_select_all_search_results_checkbox', 15);
-	}
+
+	// Add "select all search results" checkbox before members list
+	add_action('bp_before_directory_members_list', 'bp_mda_add_select_all_search_results_checkbox', 15);
 
 	// Add filterable actions menu before members list
 	add_action('bp_before_directory_members_list', 'bp_mda_add_filterable_actions_menu', 20);

@@ -229,7 +229,7 @@ function bp_mda_propagate_action() {
  * selected
  */
 function bp_mda_add_select_all_search_results_checkbox() {
-	if (! empty($_REQUEST['bp_profile_search']) && bp_mda_has_at_least_one_filter($_REQUEST)) {
+	if (bp_mda_has_at_least_one_filter()) {
 		global $members_template;
 		$checked = (isset($_REQUEST['bp_mda_select_all_search_results']) && ($_REQUEST['bp_mda_select_all_search_results'] == "on"));
 		?>
@@ -247,11 +247,22 @@ function bp_mda_add_select_all_search_results_checkbox() {
 }
 
 /**
- * Returns true if, in the given array, at least one item with a key starting
- * with "field_" has a non-empty value (i.e. if the BP Profile Search form was
- * submitted with at least one filter)
+ * Returns true if at least one item (from request or cookie) with a key
+ * starting with "field_" has a non-empty value (i.e. if the BP Profile Search
+ * form was submitted with at least one filter)
+ *
+ * @return     boolean  has valid filter or not
  */
-function bp_mda_has_at_least_one_filter(array $filters) {
+function bp_mda_has_at_least_one_filter() {
+	if (! empty($_REQUEST['bps_form']) && $_REQUEST['bps_form'] !== 'clear') {
+		$filters = $_REQUEST;
+	} elseif (empty($_REQUEST['bps_form'])) {
+		$cookie = apply_filters ('bps_cookie_name', 'bps_request');
+		parse_str (stripslashes ($_COOKIE[$cookie]), $filters);
+	} else {
+		return false;
+	}
+
 	$ok = false;
 	foreach ($filters as $k => $v) {
 		if (substr($k, 0, 6) == 'field_') {

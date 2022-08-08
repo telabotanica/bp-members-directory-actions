@@ -7,6 +7,8 @@ Currently shipped with one default action `send-message` : send a private messag
 Install, activate
 
 ## important
+You need to manually copy translation files (find them in in `languages/`) to `/wp-content/languages/plugins/`
+
 At the moment (2017-02) this plugin guarantees compatibility with BP Profile
 Search only if the member loop is initiated with default parameters (`type="active"`).
 

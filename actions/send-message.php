@@ -38,7 +38,7 @@ if (! empty($_REQUEST['subject']) && ! empty($_REQUEST['content']) && ! empty($_
 
 		<?php do_action( 'bp_before_messages_compose_content' ); ?>
 
-		<label for="send-to-input"><?php _e("Send To", 'buddypress'); ?> : </label>
+		<label for="send-to-input"><?php _e("Send to", 'bp-members-directory-actions'); ?> : </label>
 		<ul class="first acfb-holder">
 			<li>
 				<?php

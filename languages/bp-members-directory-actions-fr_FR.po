@@ -45,6 +45,10 @@ msgstr "Actions groupées"
 msgid "Send a message"
 msgstr "Envoyer un message"
 
+# wpml-name: c15fd942f1cbd69faff88abba1c34306
+msgid "Send to"
+msgstr "Destinataires"
+
 # wpml-name: cb5ae17636e975f9bf71ddf5bc542075
 msgid "0.1"
 msgstr ""
